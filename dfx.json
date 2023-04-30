@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "custom_greeting_backend": {
+      "main": "src/custom_greeting_backend/main.mo",
+      "type": "motoko"
+    },
+    "custom_greeting_frontend": {
+      "dependencies": [
+        "custom_greeting_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/custom_greeting_frontend/src/index.html"
+      },
+      "source": [
+        "src/custom_greeting_frontend/assets",
+        "dist/custom_greeting_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
