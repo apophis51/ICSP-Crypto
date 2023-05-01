@@ -4,6 +4,7 @@
       "main": "src/custom_greeting_backend/main.mo",
       "type": "motoko"
     },
+   
     "custom_greeting_frontend": {
       "dependencies": [
         "custom_greeting_backend"
