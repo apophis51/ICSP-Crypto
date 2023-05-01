@@ -2,6 +2,7 @@
 //  import {custom_greeting_backend} from "../../custom_greeting_backend";
 // import { Principal } from "../../../node_modules/@dfinity/candid/lib/cjs/idl";
 import { Principal } from "@dfinity/principal";
+import {AuthClient} from "@dfinity/auth-client";
 // import {token} from "/home/apophis51/school/ic-projects/custom_greeting/src/custom_greeting_backend/main.mo"
 
 import * as React from "react";
@@ -95,7 +96,19 @@ const MyHello = () => {
   );
 };
 
-render(<MyHello />, document.getElementById("app"));
+const init = async () => {
+
+
+const authClient = await AuthClient.create();
+
+await authClient.login({
+  identityProvider: "https://identity.ic0.app/#authorize",
+  onSuccess: async () => {
+    render(<MyHello />, document.getElementById("app"));
+  }
+});
+}
+init();
 //--------------------------------------------------------------------------------------------------
 
 
