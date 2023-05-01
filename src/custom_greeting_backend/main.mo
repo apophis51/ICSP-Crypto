@@ -1,5 +1,6 @@
 import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
+import Debug "mo:base/Debug";
 
 // actor {
 //   public query func greet(name : Text) : async Text {
@@ -9,13 +10,15 @@ import HashMap "mo:base/HashMap";
 
 actor Token {
   var owner : Principal = Principal.fromText("vzscq-mcwuk-dhp3s-cq5lc-pq35t-gizxf-jah3t-g2qwg-67aqn-igzi7-oae");
-  var totalSupply : Nat = 1000000;  //set inital value to 1 million
+  var totalSupply : Nat = 1000000000;  //set inital value to 1 million
   var symbol : Text = "ICSP";  //insane clown posse Coin
 
   var balances = HashMap.HashMap<Principal, Nat>(1, Principal.equal, Principal.hash ); //keep track of who has 
   //Motoko Uses hashmaps known as hashtables in other languages as dictionary to map values and have no explicit datatypes
 
   balances.put(owner, totalSupply);  //owner principal added to the ledger balance
+
+
 
   public query func balanceOf(who: Principal) : async Nat {   
     //balance of needs a principal datatype
@@ -26,10 +29,25 @@ actor Token {
       case null 0;
       case (?result) result;
     };
-
-
     return balance;
+    };
+
+    public query func getSymbol() : async Text {
+      return symbol;
+    };
+
+  public shared(msg) func payOut() : async Text {
+    if (balances.get(msg.caller) != null) {
+      return "You already have a balance";
     }
+    else{
+    Debug.print(debug_show(msg.caller));
+    let ammount = 10000;
+    balances.put(msg.caller, ammount);
+    return "Success";
+    };
+  };
+    
   };
 
 //principal identitfies users and canisters

@@ -1,10 +1,36 @@
+//  import { Principal } from "@difinity/principal";
+//  import {custom_greeting_backend} from "../../custom_greeting_backend";
+// import { Principal } from "../../../node_modules/@dfinity/candid/lib/cjs/idl";
+import { Principal } from "@dfinity/principal";
+// import {token} from "/home/apophis51/school/ic-projects/custom_greeting/src/custom_greeting_backend/main.mo"
+
 import * as React from "react";
 import { render } from "react-dom";
 import { custom_greeting_backend } from "../../declarations/custom_greeting_backend";
+import { custom } from "../../declarations/custom_greeting_backend";
+import {useState} from "react";
 
 const MyHello = () => {
   const [name, setName] = React.useState('');
   const [message, setMessage] = React.useState('');
+  const [inputValue, setInput] = useState("");
+  const [balanceResult, setBalance] = useState("");
+  const [isDisabled, setDisabled] = useState(false);
+  const [buttonText, setText] = useState("Get Tokens!");
+
+  async function handleClick(){
+    const principal = Principal.fromText(inputValue);
+    const balance = await custom_greeting_backend.balanceOf(principal);
+    setBalance(balance.toLocaleString());
+  }
+
+  async function handleFaucet(event){   //will print out id of annonymous principal user
+    setDisabled(true);
+    const result = await custom_greeting_backend.payOut();
+    setText(result);
+    setDisabled(false);
+    
+  }
 
   async function doGreet() {
     const greeting = await custom_greeting_backend.greet(name);
@@ -14,19 +40,34 @@ const MyHello = () => {
   return (
     <div style={{ "fontSize": "30px" }}>
       <div style={{ "backgroundColor": "yellow" }}>
-        <p>Greetings, from DFINITY!</p>
+        <p>Greetings, from ICPS!</p>
         <p>
-          {" "}
-          Type your message in the Name input field, then click{" "}
-          <b> Get Greeting</b> to display the result.
+          Check your Account Token Balance.
         </p>
       </div>
       <div style={{ margin: "30px" }}>
+        <input
+          id = "balance-principal-id"
+          type = "text"
+          placeholder="Enter a Principal ID"
+          value = {inputValue}
+          onChange={(e) => setInput(e.target.value)}
+          />
+          <br></br>
+          <button onClick={handleClick}
+                  >Get Balance!</button>
+          
+          <br></br>
+        <button onClick={handleFaucet}
+        disabled = {isDisabled}>{buttonText}</button>
+        <br></br>
+        <p>This account has a balance of{balanceResult}</p>
         <input
           id="name"
           value={name}
           onChange={(ev) => setName(ev.target.value)}
         ></input>
+        <p>Get Your Free ICSP COINS Here</p>
         <button onClick={doGreet}>Get Greeting!</button>
       </div>
       <div>
@@ -38,6 +79,49 @@ const MyHello = () => {
 };
 
 render(<MyHello />, document.getElementById("app"));
+//--------------------------------------------------------------------------------------------------
+
+
+// import * as React from "react";
+// import { render } from "react-dom";
+// import { custom_greeting_backend } from "../../declarations/custom_greeting_backend";
+
+// const MyHello = () => {
+//   const [name, setName] = React.useState('');
+//   const [message, setMessage] = React.useState('');
+
+//   async function doGreet() {
+//     const greeting = await custom_greeting_backend.greet(name);
+//     setMessage(greeting);
+//   }
+
+//   return (
+//     <div style={{ "fontSize": "30px" }}>
+//       <div style={{ "backgroundColor": "yellow" }}>
+//         <p>Greetings, from DFINITY!</p>
+//         <p>
+//           {" "}
+//           Type your message in the Name input field, then click{" "}
+//           <b> Get Greeting</b> to display the result.
+//         </p>
+//       </div>
+//       <div style={{ margin: "30px" }}>
+//         <input
+//           id="name"
+//           value={name}
+//           onChange={(ev) => setName(ev.target.value)}
+//         ></input>
+//         <button onClick={doGreet}>Get Greeting!</button>
+//       </div>
+//       <div>
+//         Greeting is: "
+//         <span style={{ color: "blue" }}>{message}</span>"
+//       </div>
+//     </div>
+//   );
+// };
+
+// render(<MyHello />, document.getElementById("app"));
 
 
 
