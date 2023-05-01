@@ -14,15 +14,18 @@
     "start": "webpack serve --mode development --env development",
     "deploy:local": "dfx deploy --network=local",
     "deploy:ic": "dfx deploy --network=ic",
-    "generate": "dfx generate custom_greeting_backend"
+    "generate": "dfx generate custom_greeting_backend",
+    "tailwind": "npx tailwindcss -i ./src/custom_greeting_frontend/assets/main.css -o ./src/custom_greeting_frontend/assets/output.css --watch"
   },
   "dependencies": {
     "@dfinity/agent": "^0.15.6",
     "@dfinity/auth-client": "^0.15.6",
     "@dfinity/candid": "^0.15.6",
     "@dfinity/principal": "^0.15.6",
+    "daisyui": "^2.51.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
     "assert": "2.0.0",
