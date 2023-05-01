@@ -9,7 +9,7 @@ import Debug "mo:base/Debug";
 // };
 
 actor Token {
-  var owner : Principal = Principal.fromText("vzscq-mcwuk-dhp3s-cq5lc-pq35t-gizxf-jah3t-g2qwg-67aqn-igzi7-oae");
+  var owner : Principal = Principal.fromText("vzscq-mcwuk-dhp3s-cq5lc-pq35t-gizxf-jah3t-g2qwg-67aqn-igzi7-oae"); //2vxsx-fae
   var totalSupply : Nat = 1000000000;  //set inital value to 1 million
   var symbol : Text = "ICSP";  //insane clown posse Coin
 
@@ -38,15 +38,33 @@ actor Token {
 
   public shared(msg) func payOut() : async Text {
     if (balances.get(msg.caller) != null) {
-      return "You already have a balance";
+      return "Already Claimed";
     }
     else{
     Debug.print(debug_show(msg.caller));
-    let ammount = 10000;
-    balances.put(msg.caller, ammount);
+    let amount = 10000;
+    balances.put(msg.caller, amount);
     return "Success";
     };
   };
+
+  public shared(msg) func transfer(to: Principal, amount: Nat) : async Text {
+    let fromBalance = await balanceOf(msg.caller);
+    if (fromBalance > amount) {
+      let newFromBalance : Nat =  fromBalance - amount;
+      balances.put(msg.caller, newFromBalance);
+
+      let toBalance = await balanceOf(to);
+      let newToBalance = toBalance + amount;
+      balances.put(to, newToBalance);
+  
+    return "Success";
+    }
+    else{
+      return "Insufficient Funds";
+    };
+    
+  }
     
   };
 

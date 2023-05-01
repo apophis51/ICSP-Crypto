@@ -17,6 +17,11 @@ const MyHello = () => {
   const [balanceResult, setBalance] = useState("");
   const [isDisabled, setDisabled] = useState(false);
   const [buttonText, setText] = useState("Get Tokens!");
+  const [recipientId, setId] = useState("")
+  const [amount, setAmount] = useState("");
+  const [isTransferDisabled, setTransferDisabled] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [isHidden, setHidden] = useState(false);
 
   async function handleClick(){
     const principal = Principal.fromText(inputValue);
@@ -32,6 +37,17 @@ const MyHello = () => {
     
   }
 
+  async function handleTransfer(event){ //
+    setHidden(true);
+    setTransferDisabled(true);
+    const recipient = Principal.fromText(recipientId);
+    const amountToTransfer = Number(amount)
+    const result = await custom_greeting_backend.transfer(recipient, amountToTransfer);
+    setFeedback(result);
+    setHidden(false);
+    setTransferDisabled(false);
+  }
+
   async function doGreet() {
     const greeting = await custom_greeting_backend.greet(name);
     setMessage(greeting);
@@ -42,6 +58,7 @@ const MyHello = () => {
       <div style={{ "backgroundColor": "yellow" }}>
         <p>Greetings, from ICPS!</p>
         <p>
+          <img src="/OIG.png" />
           Check your Account Token Balance.
         </p>
       </div>
@@ -62,17 +79,17 @@ const MyHello = () => {
         disabled = {isDisabled}>{buttonText}</button>
         <br></br>
         <p>This account has a balance of{balanceResult}</p>
-        <input
-          id="name"
-          value={name}
-          onChange={(ev) => setName(ev.target.value)}
-        ></input>
-        <p>Get Your Free ICSP COINS Here</p>
-        <button onClick={doGreet}>Get Greeting!</button>
-      </div>
-      <div>
-        Greeting is: "
-        <span style={{ color: "blue" }}>{message}</span>"
+        <br></br>
+        <legend>Account to Transfer To:</legend>
+        <input type = "text"  value = {recipientId} onChange={(e)=> setId(e.target.value)}/>
+        <legend>Transfer Amount:</legend>
+        <input 
+        type = "number"  
+        value = {amount} 
+        onChange = {(e) => setAmount(e.target.value)}
+        disabled = {isTransferDisabled}/>
+        <button onClick = {handleTransfer}>Transfer</button>
+        <p hidden={isHidden}>{feedback}</p>
       </div>
     </div>
   );
