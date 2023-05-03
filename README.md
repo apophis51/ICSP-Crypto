@@ -6,5 +6,7 @@
 
 ## About- This Crypto is hosted on the [Internet Computer](https://internetcomputer.org/) as its own  [cannister](https://wphdd-zyaaa-aaaal-achoa-cai.icp0.io/)
 
+Get the free crypto at https://wphdd-zyaaa-aaaal-achoa-cai.icp0.io/. Note: You may need to disable popup blocks.
+
 ## Current Bugs:
 * Free Coins Require a Manual Transfer to fully enter the requested account
